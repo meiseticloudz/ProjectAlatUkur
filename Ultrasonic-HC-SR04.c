@@ -4,7 +4,7 @@ int echo = 6;
 float duration;
 int distance;
 int Length;
-int door_Height =201;
+int door_Height =200;
 
 void setup() 
 {
