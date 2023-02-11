@@ -1,0 +1,43 @@
+#include <Wire.h>              // Memanggil library wire.h
+#include <LiquidCrystal_I2C.h> // Memanggil library LCD dengan I2C
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Alamat I2C(0x27) LCD dan Jenis LCD (20x4)
+
+#define ldr A0                 // Deklarasi LDR pada pin A0
+#define led D5                 // Deklarasi LED pada pin D5 NodeMcu
+ 
+int nilai;                     // Variabel nilai
+ 
+void setup() {
+  pinMode(led, OUTPUT);   // Deklarasi LED sebagai Output
+  pinMode(ldr, INPUT);    // Deklarasi LDR sebagai Input
+  Serial.begin(9600);     // Baud komunikasi serial pada 9600
+  lcd.init();             // instruksi untuk memulai LCD
+  lcd.begin(16, 2);        // instruksi untuk menggunakan lcd 16x2
+  lcd.backlight();        // instruksi untuk mengaktifkan lampu latar LCD
+}
+ 
+void loop() {
+  nilai = analogRead(ldr);     // Instruksi membaca nilai analog LDR
+  Serial.print("Nilai LDR: "); // Menampilkan Nilai analog LDR pada Serial Monitor
+  Serial.println(nilai);
+  delay(1000);
+ 
+  lcd.setCursor(0, 0);
+  lcd.print("Nilai LDR: ");
+  lcd.print(nilai);
+  delay(1000);   
+ 
+  if (nilai < 800) {          // LED On jika nilai analog lebih kecil dari 800
+    digitalWrite(led, HIGH);  // Instruksi menyalakan LED
+    Serial.print("LED ON");
+    lcd.setCursor(0,1);
+    lcd.print("LED         : ON ");
+  }
+  else {
+    digitalWrite(led, LOW);  // LED Off ika nilai analog lebih besar dari 900
+    Serial.print("LED OFF"); // Instruksi mematikan LED
+    lcd.setCursor(0,1);
+    lcd.print("LED         : OFF ");
+  }
+}
