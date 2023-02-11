@@ -1,0 +1,45 @@
+#include <LiquidCrystal_I2C.h>
+#define triggerPin D8
+#define echoPin D7
+
+// set LCD address, number of columns and rows
+// if you don't know your display address, run an I2C scanner sketch
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+void setup() {
+lcd.init();
+lcd.backlight();
+
+lcd.setCursor(0, 0);
+lcd.print("Sensor DHT 11");
+delay(1000);
+
+lcd.setCursor(0, 1);
+lcd.print("Klmpk.. X-..");
+delay(1000);
+lcd.clear();
+
+pinMode(triggerPin, OUTPUT);
+pinMode(echoPin, INPUT);
+
+}
+ 
+void loop() {
+long duration, jarak;
+digitalWrite(triggerPin, LOW);
+delayMicroseconds(2); 
+digitalWrite(triggerPin, HIGH);
+delayMicroseconds(10); 
+digitalWrite(triggerPin, LOW);
+duration = pulseIn(echoPin, HIGH);
+jarak = (duration/2) / 29.1;
+
+lcd.setCursor(3, 0);
+lcd.print("Hasil Ukur");
+
+lcd.setCursor(0, 1);
+lcd.print("jarak :");
+lcd.print(jarak);
+lcd.print(" cm");
+delay(1000);
+}
